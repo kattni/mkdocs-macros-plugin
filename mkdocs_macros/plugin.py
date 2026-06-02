@@ -133,7 +133,7 @@ class MacrosPlugin(BasePlugin):
         ('force_render_paths',  J2_STRING),
         # Include directory for external files
         # also works for {% include ....%}) and {% import ....%}):
-        ('include_dir',  J2_STRING),
+        ('include_dir',  J2_STRING_LIST),
         # list of additional yaml files:
         ('include_yaml', PluginType(list, default=[])),
         # for altering the j2 markers, in case of need:
@@ -914,10 +914,8 @@ class MacrosPlugin(BasePlugin):
         This is to add files or directories to the list of "watched" 
         files for auto-reloading.
         """
-        # define directories to add, keep non nulls
-        additional = [self.config['include_dir']  # markdown includes
-                      ]
-        additional = [el for el in additional if el]
+        # define directories to add
+        additional = self.config['include_dir']
         if additional:
             trace("We will also watch:", additional)
         # necessary because of a bug in mkdocs:
