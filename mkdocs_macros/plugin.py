@@ -817,11 +817,12 @@ class MacrosPlugin(BasePlugin):
         # NOTE: using DOCS_DIR as default is not ideal,
         # because those files get rendered as well, which is incorrect
         # since they are partials; but we do not want to break existing installs
-        include_dir = self.config['include_dir'] or DOCS_DIR
-        if not os.path.isdir(include_dir):
-            raise FileNotFoundError("MACROS ERROR: Include directory '%s' "
-                                    "does not exist!" %
-                                    include_dir)
+        include_dir = self.config['include_dir'] or [DOCS_DIR]
+        for directory in include_dir:
+            if not os.path.isdir(directory):
+                raise FileNotFoundError("MACROS ERROR: Include directory '%s' "
+                                        "does not exist!" %
+                                        directory)
         if self.config['include_dir']:
             trace("Includes directory:", include_dir)
         else:
